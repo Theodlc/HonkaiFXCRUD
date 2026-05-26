@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+
+<VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: #1a222d; -fx-padding: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="com.template.MainController">
+
+  <GridPane hgap="10.0" vgap="10.0" alignment="CENTER">
+    <columnConstraints>
+      <ColumnConstraints halignment="RIGHT" minWidth="80.0" />
+      <ColumnConstraints halignment="LEFT" minWidth="200.0" />
+    </columnConstraints>
+    <rowConstraints>
+      <RowConstraints minHeight="30.0" />
+      <RowConstraints minHeight="30.0" />
+      <RowConstraints minHeight="30.0" />
+      <RowConstraints minHeight="30.0" />
+      <RowConstraints minHeight="110.0" />
+    </rowConstraints>
+
+    <Label text="ID:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+    <TextField fx:id="txtId" promptText="Ex: 101" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+    <Label text="Nome:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <TextField fx:id="txtNome" promptText="Nome do Item/Cone de Luz" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+    <Label text="Elemento:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    <ComboBox fx:id="comboElemento" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <items>
+        <FXCollections fx:factory="observableArrayList">
+          <String fx:value="Físico" />
+          <String fx:value="Fogo" />
+          <String fx:value="Gelo" />
+          <String fx:value="Raio" />
+          <String fx:value="Vento" />
+          <String fx:value="Quântico" />
+          <String fx:value="Imaginário" />
+        </FXCollections>
+      </items>
+    </ComboBox>
+
+    <Label text="Raridade:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+    <ComboBox fx:id="comboRaridade" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <items>
+        <FXCollections fx:factory="observableArrayList">
+          <String fx:value="3 Estrelas (✦✦✦)" />
+          <String fx:value="4 Estrelas (✦✦✦✦)" />
+          <String fx:value="5 Estrelas (✦✦✦✦✦)" />
+        </FXCollections>
+      </items>
+    </ComboBox>
+
+    <Label text="Efeito:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+    <TextArea fx:id="txtEfeito" wrapText="true" prefHeight="100.0" prefWidth="300.0" promptText="Digite a descrição das habilidades ou efeitos..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
+  </GridPane>
+
+  <Button onAction="#onBotaoSalvarClick" text="Salvar no Inventário" style="-fx-background-color: #4ba3c7; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20 8 20; -fx-cursor: hand;" />
+
+  <TableView fx:id="tabelaItens" prefHeight="250.0" prefWidth="600.0">
+    <columns>
+      <TableColumn fx:id="colId" prefWidth="60.0" text="ID" />
+      <TableColumn fx:id="colNome" prefWidth="140.0" text="Nome" />
+      <TableColumn fx:id="colElemento" prefWidth="100.0" text="Elemento" />
+      <TableColumn fx:id="colRaridade" prefWidth="120.0" text="Raridade" />
+      <TableColumn fx:id="colEfeito" prefWidth="180.0" text="Efeito" />
+    </columns>
+  </TableView>
+</VBox>
