@@ -3,31 +3,34 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.effect.DropShadow?>
 <?import java.lang.*?>
 
-<VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: #1a222d; -fx-padding: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="com.template.MainController">
+<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #0b1320; -fx-padding: 30; -fx-font-family: 'Segoe UI', Arial, sans-serif;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="com.template.MainController">
 
-  <GridPane hgap="10.0" vgap="10.0" alignment="CENTER">
+  <Label text="✦ TERMINAL DE DADOS HONKAI ✦" style="-fx-text-fill: #e8c374; -fx-font-size: 24px; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(232,195,116,0.5), 15, 0, 0, 0);" />
+
+  <GridPane hgap="15.0" vgap="15.0" alignment="CENTER" style="-fx-background-color: #151e2d; -fx-padding: 25; -fx-background-radius: 10; -fx-border-color: #24344d; -fx-border-radius: 10; -fx-border-width: 2;">
     <columnConstraints>
-      <ColumnConstraints halignment="RIGHT" minWidth="80.0" />
-      <ColumnConstraints halignment="LEFT" minWidth="200.0" />
+      <ColumnConstraints halignment="RIGHT" minWidth="90.0" />
+      <ColumnConstraints halignment="LEFT" minWidth="250.0" />
     </columnConstraints>
     <rowConstraints>
-      <RowConstraints minHeight="30.0" />
-      <RowConstraints minHeight="30.0" />
-      <RowConstraints minHeight="30.0" />
-      <RowConstraints minHeight="30.0" />
+      <RowConstraints minHeight="35.0" />
+      <RowConstraints minHeight="35.0" />
+      <RowConstraints minHeight="35.0" />
+      <RowConstraints minHeight="35.0" />
       <RowConstraints minHeight="110.0" />
     </rowConstraints>
 
-    <Label text="ID:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-    <TextField fx:id="txtId" promptText="Ex: 101" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <Label text="ID:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold; -fx-font-size: 14px;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+    <TextField fx:id="txtId" promptText="Ex: 101" style="-fx-background-color: #1f2d42; -fx-text-fill: white; -fx-prompt-text-fill: #5c7499; -fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-    <Label text="Nome:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-    <TextField fx:id="txtNome" promptText="Nome do Item/Cone de Luz" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <Label text="Nome:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold; -fx-font-size: 14px;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <TextField fx:id="txtNome" promptText="Nome do Personagem/Item" style="-fx-background-color: #1f2d42; -fx-text-fill: white; -fx-prompt-text-fill: #5c7499; -fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-    <Label text="Elemento:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-    <ComboBox fx:id="comboElemento" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+    <Label text="Elemento:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold; -fx-font-size: 14px;" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    <ComboBox fx:id="comboElemento" prefWidth="250.0" style="-fx-background-color: #1f2d42; -fx-background-radius: 5; -fx-base: #1f2d42;" GridPane.columnIndex="1" GridPane.rowIndex="2">
       <items>
         <FXCollections fx:factory="observableArrayList">
           <String fx:value="Físico" />
@@ -41,8 +44,8 @@
       </items>
     </ComboBox>
 
-    <Label text="Raridade:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-    <ComboBox fx:id="comboRaridade" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+    <Label text="Raridade:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold; -fx-font-size: 14px;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+    <ComboBox fx:id="comboRaridade" prefWidth="250.0" style="-fx-background-color: #1f2d42; -fx-background-radius: 5; -fx-base: #1f2d42;" GridPane.columnIndex="1" GridPane.rowIndex="3">
       <items>
         <FXCollections fx:factory="observableArrayList">
           <String fx:value="3 Estrelas (✦✦✦)" />
@@ -52,19 +55,35 @@
       </items>
     </ComboBox>
 
-    <Label text="Efeito:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.valignment="TOP" />
-    <TextArea fx:id="txtEfeito" wrapText="true" prefHeight="100.0" prefWidth="300.0" promptText="Digite a descrição das habilidades ou efeitos..." GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <Label text="Efeito:" style="-fx-text-fill: #4ba3c7; -fx-font-weight: bold; -fx-font-size: 14px;" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+    <TextArea fx:id="txtEfeito" wrapText="true" prefHeight="100.0" prefWidth="300.0" promptText="Digite os detalhes e habilidades..." style="-fx-control-inner-background: #1f2d42; -fx-text-fill: white; -fx-prompt-text-fill: #5c7499; -fx-background-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
   </GridPane>
 
-  <Button onAction="#onBotaoSalvarClick" text="Salvar no Inventário" style="-fx-background-color: #4ba3c7; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20 8 20; -fx-cursor: hand;" />
+  <HBox alignment="CENTER" spacing="20.0">
+    <Button onAction="#onBotaoSalvarClick" text="✦ Salvar Novo" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10 25 10 25; -fx-background-radius: 8; -fx-cursor: hand;">
+      <effect><DropShadow color="#1a7540" radius="5" spread="0.2" offsetY="3"/></effect>
+    </Button>
 
-  <TableView fx:id="tabelaItens" prefHeight="250.0" prefWidth="600.0">
+    <Button onAction="#onBotaoEditarClick" text="⟳ Atualizar" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10 25 10 25; -fx-background-radius: 8; -fx-cursor: hand;">
+      <effect><DropShadow color="#a66a0b" radius="5" spread="0.2" offsetY="3"/></effect>
+    </Button>
+
+    <Button onAction="#onBotaoExcluirClick" text="✖ Excluir" style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10 25 10 25; -fx-background-radius: 8; -fx-cursor: hand;">
+      <effect><DropShadow color="#85251b" radius="5" spread="0.2" offsetY="3"/></effect>
+    </Button>
+
+    <Button onAction="#onBotaoLimparClick" text="⊘ Limpar" style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10 25 10 25; -fx-background-radius: 8; -fx-cursor: hand;">
+      <effect><DropShadow color="#1a252f" radius="5" spread="0.2" offsetY="3"/></effect>
+    </Button>
+  </HBox>
+
+  <TableView fx:id="tabelaItens" onMouseClicked="#onTabelaClicada" prefHeight="220.0" prefWidth="760.0" style="-fx-base: #151e2d; -fx-control-inner-background: #151e2d; -fx-background-color: #151e2d; -fx-table-cell-border-color: #24344d; -fx-text-background-color: white;">
     <columns>
       <TableColumn fx:id="colId" prefWidth="60.0" text="ID" />
-      <TableColumn fx:id="colNome" prefWidth="140.0" text="Nome" />
-      <TableColumn fx:id="colElemento" prefWidth="100.0" text="Elemento" />
-      <TableColumn fx:id="colRaridade" prefWidth="120.0" text="Raridade" />
-      <TableColumn fx:id="colEfeito" prefWidth="180.0" text="Efeito" />
+      <TableColumn fx:id="colNome" prefWidth="180.0" text="NOME" />
+      <TableColumn fx:id="colElemento" prefWidth="120.0" text="ELEMENTO" />
+      <TableColumn fx:id="colRaridade" prefWidth="140.0" text="RARIDADE" />
+      <TableColumn fx:id="colEfeito" prefWidth="250.0" text="EFEITO" />
     </columns>
   </TableView>
 </VBox>
