@@ -6,7 +6,7 @@ import java.util.List;
 
 public class HonkaiDAO {
 
-    public void cadastrar(HonkaiDTO honkai) {
+    public void cadastrar(HonkaiDTO honkai) throws SQLException {
         String sql = "INSERT INTO honkai (nome, elemento, efeito, raridade) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConexaoBD.conectar();
@@ -18,15 +18,11 @@ public class HonkaiDAO {
             stmt.setString(4, honkai.getRaridade());
 
             stmt.executeUpdate();
-            System.out.println("Personagem cadastrado com sucesso!");
-
-        } catch (SQLException e) {
-            System.out.println("Falha ao cadastrar dados: " + e.getMessage());
         }
     }
 
-    public List<HonkaiDTO> listar() {
-        String sql = "SELECT * FROM honkai";
+    public List<HonkaiDTO> listar() throws SQLException {
+        String sql = "SELECT * FROM honkai ORDER BY id ASC";
         List<HonkaiDTO> listaPersonagens = new ArrayList<>();
 
         try (Connection conn = ConexaoBD.conectar();
@@ -43,15 +39,11 @@ public class HonkaiDAO {
 
                 listaPersonagens.add(personagem);
             }
-
-        } catch (SQLException e) {
-            System.out.println("Falha ao listar dados: " + e.getMessage());
         }
-
         return listaPersonagens;
     }
 
-    public void editar(HonkaiDTO honkai) {
+    public void editar(HonkaiDTO honkai) throws SQLException {
         String sql = "UPDATE honkai SET nome = ?, elemento = ?, efeito = ?, raridade = ? WHERE id = ?";
 
         try (Connection conn = ConexaoBD.conectar();
@@ -63,36 +55,18 @@ public class HonkaiDAO {
             stmt.setString(4, honkai.getRaridade());
             stmt.setInt(5, honkai.getId());
 
-            int linhas = stmt.executeUpdate();
-
-            if (linhas > 0) {
-                System.out.println("Personagem atualizado com sucesso!");
-            } else {
-                System.out.println("ID não encontrado.");
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Falha ao atualizar dados: " + e.getMessage());
+            stmt.executeUpdate();
         }
     }
 
-    public void excluir(int id) {
+    public void excluir(int id) throws SQLException {
         String sql = "DELETE FROM honkai WHERE id = ?";
 
         try (Connection conn = ConexaoBD.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
-            int linhas = stmt.executeUpdate();
-
-            if (linhas > 0) {
-                System.out.println("Personagem excluído com sucesso!");
-            } else {
-                System.out.println("ID não encontrado.");
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Falha ao excluir dados: " + e.getMessage());
+            stmt.executeUpdate();
         }
     }
 }

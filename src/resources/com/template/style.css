@@ -1,0 +1,80 @@
+/* Fundo geral da aplicação */
+.root {
+    -fx-background-color: #0b1320;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Efeito de Hover (passar o mouse) nos botões */
+.button:hover {
+    -fx-opacity: 0.85;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.button:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Estilização da Tabela (TableView) */
+.table-view {
+    -fx-background-color: #151e2d;
+    -fx-border-color: #24344d;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Cabeçalho da Tabela */
+.table-view .column-header-background {
+    -fx-background-color: #1f2d42;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #e8c374;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+/* Linhas da Tabela (Cores alternadas) */
+.table-row-cell:odd {
+    -fx-background-color: #151e2d;
+}
+
+.table-row-cell:even {
+    -fx-background-color: #1a2536;
+}
+
+/* Linha selecionada na Tabela */
+.table-row-cell:selected {
+    -fx-background-color: #2980b9;
+}
+
+.table-row-cell:selected .text {
+    -fx-fill: white;
+}
+
+/* Scrollbar da tabela mais discreta */
+.scroll-bar:vertical, .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+/* Cria as linhas VERTECAIS separando as colunas */
+.table-cell {
+    -fx-border-color: #24344d;
+    -fx-border-width: 0 1px 0 0;
+}
+
+/* Cria as linhas HORIZONTAIS separando todas as linhas (inclusive as vazias) */
+.table-row-cell {
+    -fx-border-color: #24344d;
+    -fx-border-width: 0 0 1px 0;
+}
+
+/* Garante que o fundo das linhas vazias combine com a tabela */
+.table-row-cell:empty {
+    -fx-background-color: #151e2d;
+}

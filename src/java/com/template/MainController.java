@@ -1,12 +1,12 @@
 package com.template;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import java.sql.SQLException;
+import java.util.List;
 
 public class MainController {
 
@@ -15,6 +15,11 @@ public class MainController {
     @FXML private ComboBox<String> comboElemento;
     @FXML private ComboBox<String> comboRaridade;
     @FXML private TextArea txtEfeito;
+    @FXML private Label lblMensagem;
+
+    @FXML private Button btnSalvar;
+    @FXML private Button btnEditar;
+    @FXML private Button btnExcluir;
 
     @FXML private TableView<HonkaiDTO> tabelaItens;
     @FXML private TableColumn<HonkaiDTO, Integer> colId;
@@ -22,6 +27,8 @@ public class MainController {
     @FXML private TableColumn<HonkaiDTO, String> colElemento;
     @FXML private TableColumn<HonkaiDTO, String> colRaridade;
     @FXML private TableColumn<HonkaiDTO, String> colEfeito;
+
+    private HonkaiDAO dao = new HonkaiDAO();
 
     @FXML
     public void initialize() {
@@ -33,25 +40,43 @@ public class MainController {
 
         comboElemento.getSelectionModel().selectFirst();
         comboRaridade.getSelectionModel().select(2);
+
+        carregarTabela();
+    }
+
+    private void carregarTabela() {
+        try {
+            List<HonkaiDTO> lista = dao.listar();
+            ObservableList<HonkaiDTO> dados = FXCollections.observableArrayList(lista);
+            tabelaItens.setItems(dados);
+        } catch (SQLException e) {
+            exibirMensagem("Erro ao carregar dados do banco.", true);
+        }
     }
 
     @FXML
     void onBotaoSalvarClick() {
+        if (txtNome.getText().isEmpty() || txtEfeito.getText().isEmpty()) {
+            exibirMensagem("Preencha todos os campos antes de salvar!", true);
+            return;
+        }
+
         try {
-            int id = Integer.parseInt(txtId.getText());
-            String nome = txtNome.getText();
-            String elemento = comboElemento.getValue();
-            String raridade = comboRaridade.getValue();
-            String efeito = txtEfeito.getText();
+            HonkaiDTO novoItem = new HonkaiDTO(
+                    0,
+                    txtNome.getText(),
+                    comboElemento.getValue(),
+                    comboRaridade.getValue(),
+                    txtEfeito.getText()
+            );
 
-            HonkaiDTO novoItem = new HonkaiDTO(id, nome, elemento, raridade, efeito);
-            tabelaItens.getItems().add(novoItem);
-
-            System.out.println("Item adicionado na tabela com sucesso!");
+            dao.cadastrar(novoItem);
+            exibirMensagem("Personagem cadastrado com sucesso!", false);
             limparCampos();
+            carregarTabela();
 
-        } catch (NumberFormatException e) {
-            System.out.println("ERRO: O campo ID precisa ser um número válido!");
+        } catch (SQLException e) {
+            exibirMensagem("Erro ao salvar no banco de dados.", true);
         }
     }
 
@@ -65,54 +90,57 @@ public class MainController {
             comboElemento.setValue(itemSelecionado.getElemento());
             comboRaridade.setValue(itemSelecionado.getRaridade());
             txtEfeito.setText(itemSelecionado.getEfeito());
+
+            btnSalvar.setDisable(true);
+            btnEditar.setDisable(false);
+            btnExcluir.setDisable(false);
+            lblMensagem.setText("");
         }
     }
 
     @FXML
     void onBotaoEditarClick() {
-        HonkaiDTO itemSelecionado = tabelaItens.getSelectionModel().getSelectedItem();
+        if (txtId.getText().isEmpty()) return;
 
-        if (itemSelecionado != null) {
-            try {
-                int index = tabelaItens.getItems().indexOf(itemSelecionado);
+        try {
+            HonkaiDTO itemAtualizado = new HonkaiDTO(
+                    Integer.parseInt(txtId.getText()),
+                    txtNome.getText(),
+                    comboElemento.getValue(),
+                    comboRaridade.getValue(),
+                    txtEfeito.getText()
+            );
 
-                HonkaiDTO itemAtualizado = new HonkaiDTO(
-                        Integer.parseInt(txtId.getText()),
-                        txtNome.getText(),
-                        comboElemento.getValue(),
-                        comboRaridade.getValue(),
-                        txtEfeito.getText()
-                );
+            dao.editar(itemAtualizado);
+            exibirMensagem("Personagem atualizado com sucesso!", false);
+            limparCampos();
+            carregarTabela();
 
-                tabelaItens.getItems().set(index, itemAtualizado);
-                System.out.println("Item atualizado com sucesso!");
-                limparCampos();
-
-            } catch (NumberFormatException e) {
-                System.out.println("ERRO: O campo ID precisa ser um número!");
-            }
-        } else {
-            System.out.println("Selecione um item na tabela primeiro para poder editar!");
+        } catch (SQLException e) {
+            exibirMensagem("Erro ao atualizar o personagem.", true);
         }
     }
 
     @FXML
     void onBotaoExcluirClick() {
-        HonkaiDTO itemSelecionado = tabelaItens.getSelectionModel().getSelectedItem();
+        if (txtId.getText().isEmpty()) return;
 
-        if (itemSelecionado != null) {
-            tabelaItens.getItems().remove(itemSelecionado);
-            System.out.println("Item excluído com sucesso!");
+        try {
+            int id = Integer.parseInt(txtId.getText());
+            dao.excluir(id);
+            exibirMensagem("Personagem excluído com sucesso!", false);
             limparCampos();
-        } else {
-            System.out.println("Selecione um item na tabela primeiro para poder excluir!");
+            carregarTabela();
+
+        } catch (SQLException e) {
+            exibirMensagem("Erro ao excluir personagem.", true);
         }
     }
 
     @FXML
     void onBotaoLimparClick() {
         limparCampos();
-        System.out.println("Campos limpos e seleção desfeita!");
+        lblMensagem.setText("");
     }
 
     private void limparCampos() {
@@ -122,5 +150,18 @@ public class MainController {
         comboElemento.getSelectionModel().selectFirst();
         comboRaridade.getSelectionModel().select(2);
         tabelaItens.getSelectionModel().clearSelection();
+
+        btnSalvar.setDisable(false);
+        btnEditar.setDisable(true);
+        btnExcluir.setDisable(true);
+    }
+
+    private void exibirMensagem(String mensagem, boolean erro) {
+        lblMensagem.setText(mensagem);
+        if (erro) {
+            lblMensagem.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
+        } else {
+            lblMensagem.setStyle("-fx-text-fill: #2ecc71; -fx-font-weight: bold;");
+        }
     }
 }
