@@ -2,14 +2,19 @@ package com.template.model.dao;
 
 import com.template.model.ConexaoBD;
 import com.template.model.dto.HonkaiDTO;
+import com.template.DialogUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HonkaiDAO {
 
-    public void cadastrar(HonkaiDTO honkai) throws SQLException {
+    private static final Logger logger = Logger.getLogger(HonkaiDAO.class.getName());
+
+    public boolean cadastrar(HonkaiDTO honkai) {
         String sql = "INSERT INTO honkai (nome, elemento, efeito, raridade) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConexaoBD.conectar();
@@ -21,10 +26,15 @@ public class HonkaiDAO {
             stmt.setString(4, honkai.getRaridade());
 
             stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Erro ao cadastrar personagem", e);
+            DialogUtil.showError("Erro ao cadastrar personagem no banco de dados.");
+            return false;
         }
     }
 
-    public List<HonkaiDTO> listar() throws SQLException {
+    public List<HonkaiDTO> listar() {
         String sql = "SELECT * FROM honkai ORDER BY id ASC";
         List<HonkaiDTO> listaPersonagens = new ArrayList<>();
 
@@ -42,11 +52,14 @@ public class HonkaiDAO {
 
                 listaPersonagens.add(personagem);
             }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Erro ao listar personagens", e);
+            DialogUtil.showError("Erro ao listar dados do banco.");
         }
         return listaPersonagens;
     }
 
-    public void editar(HonkaiDTO honkai) throws SQLException {
+    public boolean editar(HonkaiDTO honkai) {
         String sql = "UPDATE honkai SET nome = ?, elemento = ?, efeito = ?, raridade = ? WHERE id = ?";
 
         try (Connection conn = ConexaoBD.conectar();
@@ -59,10 +72,15 @@ public class HonkaiDAO {
             stmt.setInt(5, honkai.getId());
 
             stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Erro ao editar personagem", e);
+            DialogUtil.showError("Erro ao atualizar o personagem no banco de dados.");
+            return false;
         }
     }
 
-    public void excluir(int id) throws SQLException {
+    public boolean excluir(int id) {
         String sql = "DELETE FROM honkai WHERE id = ?";
 
         try (Connection conn = ConexaoBD.conectar();
@@ -70,6 +88,11 @@ public class HonkaiDAO {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Erro ao excluir personagem", e);
+            DialogUtil.showError("Erro ao excluir personagem do banco de dados.");
+            return false;
         }
     }
 }

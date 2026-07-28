@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import java.sql.SQLException;
 import java.util.List;
 
 import com.template.DialogUtil;
@@ -25,7 +24,7 @@ public class MainController {
     @FXML private Button btnEditar;
     @FXML private Button btnExcluir;
 
-    @FXML private TableView<HonkaiDTO> tabelaItens;
+    @FXML private TableView<HonkaiDTO> tblItens;
     @FXML private TableColumn<HonkaiDTO, Integer> colId;
     @FXML private TableColumn<HonkaiDTO, String> colNome;
     @FXML private TableColumn<HonkaiDTO, String> colElemento;
@@ -49,12 +48,10 @@ public class MainController {
     }
 
     private void carregarTabela() {
-        try {
-            List<HonkaiDTO> lista = dao.listar();
+        List<HonkaiDTO> lista = dao.listar();
+        if (lista != null) {
             ObservableList<HonkaiDTO> dados = FXCollections.observableArrayList(lista);
-            tabelaItens.setItems(dados);
-        } catch (SQLException e) {
-            exibirMensagem("Erro ao carregar dados do banco.", true);
+            tblItens.setItems(dados);
         }
     }
 
@@ -65,28 +62,25 @@ public class MainController {
             return;
         }
 
-        try {
-            HonkaiDTO novoItem = new HonkaiDTO(
-                    0,
-                    txtNome.getText(),
-                    comboElemento.getValue(),
-                    comboRaridade.getValue(),
-                    txtEfeito.getText()
-            );
+        HonkaiDTO novoItem = new HonkaiDTO(
+                0,
+                txtNome.getText(),
+                comboElemento.getValue(),
+                comboRaridade.getValue(),
+                txtEfeito.getText()
+        );
 
-            dao.cadastrar(novoItem);
+        boolean sucesso = dao.cadastrar(novoItem);
+        if (sucesso) {
             exibirMensagem("Personagem cadastrado com sucesso!", false);
             limparCampos();
             carregarTabela();
-
-        } catch (SQLException e) {
-            exibirMensagem("Erro ao salvar no banco de dados.", true);
         }
     }
 
     @FXML
     void onTabelaClicada() {
-        HonkaiDTO itemSelecionado = tabelaItens.getSelectionModel().getSelectedItem();
+        HonkaiDTO itemSelecionado = tblItens.getSelectionModel().getSelectedItem();
 
         if (itemSelecionado != null) {
             txtId.setText(String.valueOf(itemSelecionado.getId()));
@@ -106,22 +100,22 @@ public class MainController {
     void onBotaoEditarClick() {
         if (txtId.getText().isEmpty()) return;
 
-        try {
-            HonkaiDTO itemAtualizado = new HonkaiDTO(
-                    Integer.parseInt(txtId.getText()),
-                    txtNome.getText(),
-                    comboElemento.getValue(),
-                    comboRaridade.getValue(),
-                    txtEfeito.getText()
-            );
+        boolean confirmacao = DialogUtil.showConfirmation("Tem certeza que deseja salvar as alterações neste personagem?");
+        if (!confirmacao) return;
 
-            dao.editar(itemAtualizado);
+        HonkaiDTO itemAtualizado = new HonkaiDTO(
+                Integer.parseInt(txtId.getText()),
+                txtNome.getText(),
+                comboElemento.getValue(),
+                comboRaridade.getValue(),
+                txtEfeito.getText()
+        );
+
+        boolean sucesso = dao.editar(itemAtualizado);
+        if (sucesso) {
             exibirMensagem("Personagem atualizado com sucesso!", false);
             limparCampos();
             carregarTabela();
-
-        } catch (SQLException e) {
-            exibirMensagem("Erro ao atualizar o personagem.", true);
         }
     }
 
@@ -129,15 +123,16 @@ public class MainController {
     void onBotaoExcluirClick() {
         if (txtId.getText().isEmpty()) return;
 
-        try {
-            int id = Integer.parseInt(txtId.getText());
-            dao.excluir(id);
+        boolean confirmacao = DialogUtil.showConfirmation("Tem certeza que deseja excluir este personagem? Esta ação não pode ser desfeita.");
+        if (!confirmacao) return;
+
+        int id = Integer.parseInt(txtId.getText());
+        boolean sucesso = dao.excluir(id);
+
+        if (sucesso) {
             exibirMensagem("Personagem excluído com sucesso!", false);
             limparCampos();
             carregarTabela();
-
-        } catch (SQLException e) {
-            exibirMensagem("Erro ao excluir personagem.", true);
         }
     }
 
@@ -153,7 +148,7 @@ public class MainController {
         txtEfeito.clear();
         comboElemento.getSelectionModel().selectFirst();
         comboRaridade.getSelectionModel().select(2);
-        tabelaItens.getSelectionModel().clearSelection();
+        tblItens.getSelectionModel().clearSelection();
 
         btnSalvar.setDisable(false);
         btnEditar.setDisable(true);
@@ -164,7 +159,6 @@ public class MainController {
         lblMensagem.setText(mensagem);
         if (erro) {
             lblMensagem.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
-            DialogUtil.showError(mensagem);
         } else {
             lblMensagem.setStyle("-fx-text-fill: #2ecc71; -fx-font-weight: bold;");
             DialogUtil.showInfo(mensagem);
