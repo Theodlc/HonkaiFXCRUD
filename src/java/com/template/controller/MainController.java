@@ -1,5 +1,7 @@
-package com.template;
+package com.template.controller;
 
+import com.template.model.dao.HonkaiDAO;
+import com.template.model.dto.HonkaiDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -7,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.sql.SQLException;
 import java.util.List;
+
+import com.template.DialogUtil;
 
 public class MainController {
 
@@ -160,8 +164,10 @@ public class MainController {
         lblMensagem.setText(mensagem);
         if (erro) {
             lblMensagem.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
+            DialogUtil.showError(mensagem);
         } else {
             lblMensagem.setStyle("-fx-text-fill: #2ecc71; -fx-font-weight: bold;");
+            DialogUtil.showInfo(mensagem);
         }
     }
 }

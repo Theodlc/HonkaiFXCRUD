@@ -6,7 +6,7 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import java.lang.*?>
 
-<VBox stylesheets="@style.css" alignment="CENTER" spacing="20.0" style="-fx-background-color: #0b1320; -fx-padding: 30; -fx-font-family: 'Segoe UI', Arial, sans-serif;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="com.template.MainController">
+<VBox stylesheets="@style.css" alignment="CENTER" spacing="20.0" style="-fx-background-color: #0b1320; -fx-padding: 30; -fx-font-family: 'Segoe UI', Arial, sans-serif;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fxml.com/fxml/1" fx:controller="com.template.controller.MainController">
 
   <Label text="✦ TERMINAL DE DADOS HONKAI ✦" style="-fx-text-fill: #e8c374; -fx-font-size: 24px; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(232,195,116,0.5), 15, 0, 0, 0);" />
 
