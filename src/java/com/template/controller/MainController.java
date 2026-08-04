@@ -127,7 +127,6 @@ public class MainController {
 
     @FXML
     void onBotaoExcluirClick() {
-        // USO DA CLASSE DE VALIDAÇÃO
         if (!HonkaiValidador.isIdValido(txtId.getText())) return;
 
         boolean confirmacao = DialogUtil.showConfirmation("Tem certeza que deseja excluir este personagem? Esta ação não pode ser desfeita.");
