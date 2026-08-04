@@ -2,7 +2,7 @@ package com.template.model.dao;
 
 import com.template.model.ConexaoBD;
 import com.template.model.dto.HonkaiDTO;
-import com.template.DialogUtil;
+import com.template.util.DialogUtil;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -2,6 +2,7 @@ package com.template.controller;
 
 import com.template.model.dao.HonkaiDAO;
 import com.template.model.dto.HonkaiDTO;
+import com.template.validator.HonkaiValidador;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,7 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.util.List;
 
-import com.template.DialogUtil;
+import com.template.util.DialogUtil;
 
 public class MainController {
 
@@ -57,7 +58,7 @@ public class MainController {
 
     @FXML
     void onBotaoSalvarClick() {
-        if (txtNome.getText().isEmpty() || txtEfeito.getText().isEmpty()) {
+        if (!HonkaiValidador.isValidoParaSalvar(txtNome.getText(), txtEfeito.getText())) {
             exibirMensagem("Preencha todos os campos antes de salvar!", true);
             return;
         }
@@ -98,7 +99,12 @@ public class MainController {
 
     @FXML
     void onBotaoEditarClick() {
-        if (txtId.getText().isEmpty()) return;
+        if (!HonkaiValidador.isIdValido(txtId.getText())) return;
+
+        if (!HonkaiValidador.isValidoParaSalvar(txtNome.getText(), txtEfeito.getText())) {
+            exibirMensagem("Preencha todos os campos antes de editar!", true);
+            return;
+        }
 
         boolean confirmacao = DialogUtil.showConfirmation("Tem certeza que deseja salvar as alterações neste personagem?");
         if (!confirmacao) return;
@@ -121,7 +127,8 @@ public class MainController {
 
     @FXML
     void onBotaoExcluirClick() {
-        if (txtId.getText().isEmpty()) return;
+        // USO DA CLASSE DE VALIDAÇÃO
+        if (!HonkaiValidador.isIdValido(txtId.getText())) return;
 
         boolean confirmacao = DialogUtil.showConfirmation("Tem certeza que deseja excluir este personagem? Esta ação não pode ser desfeita.");
         if (!confirmacao) return;
